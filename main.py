@@ -26,7 +26,7 @@ prompt=ChatPromptTemplate.from_messages(
     [
         ('system','''You are an expert multilingual content analyst.
 
-Your task is to create a detailed, information-rich summary of the provided content.
+Your task is to create a detailed, information-rich summary of the provided content in {language}.
 
 Requirements:
 - Preserve all  topics and sections.
@@ -88,6 +88,7 @@ gemini_key=st.sidebar.text_input(label='Your gemini api key from google ai studi
 
 st.title('Basic youtube  or docs url summarizer 🦜 ')
 entered_url=st.text_input(label='Enter a valid url',placeholder='eg. youtube.com/watch?v=....')
+language=st.text_input(label='enter a valid language name',max_chars=10)
 
 if gemini_key:
     llm=ChatGoogleGenerativeAI(model='gemini-3.1-flash-lite',api_key=gemini_key,streaming=True)
@@ -98,7 +99,7 @@ else:
 
 chain=prompt|llm
 
-if entered_url:
+if entered_url and language:
     if validators.url(entered_url):
         if 'youtube'  in str(entered_url) or 'youtu.be' in str(entered_url):
             with st.spinner("Getting transcript..."):  
@@ -107,7 +108,7 @@ if entered_url:
 
             with st.spinner("Getting summary..."):  
                 try:               
-                    response=chain.stream({'document':transcript})
+                    response=chain.stream({'document':transcript,'language':language})
                 except Exception as e:
                     st.exception(f'Error occured {e}')
                     st.stop()
@@ -138,7 +139,7 @@ if entered_url:
 
             with st.spinner("Getting summary..."):  
                 try:               
-                    response=chain.stream({'document':docs})
+                    response=chain.stream({'document':docs,'language':language})
                 except Exception as e:
                     st.exception(f'Error occured {e}')
                     st.stop()
