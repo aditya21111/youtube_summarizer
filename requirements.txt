@@ -1,0 +1,6 @@
+langchain
+dotenv
+langchain-google-genai
+pymupdf
+ipykernel
+streamlit
