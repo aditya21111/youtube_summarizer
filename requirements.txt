@@ -70,6 +70,7 @@ langchain-google-genai==4.2.5
 langchain-groq==1.1.3
 langchain-protocol==0.0.18
 langchain-text-splitters==1.1.2
+langchain-yt-dlp==0.0.8
 langdetect==1.0.9
 langgraph==1.2.6
 langgraph-checkpoint==4.1.1
@@ -172,4 +173,5 @@ wrapt==2.2.1
 xxhash==3.7.0
 yarl==1.24.2
 youtube-transcript-api==1.2.4
+yt-dlp==2026.6.9
 zstandard==0.25.0
