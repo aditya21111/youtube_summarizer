@@ -67,7 +67,7 @@ For each  topic:
 def get_transcript(url:str)->str:
     """Given a youtube video url it will generate transcript required to generate summary"""
     try:
-        loader=YoutubeLoader.from_youtube_url(url,add_video_info=False)
+        loader=YoutubeLoader.from_youtube_url(url,add_video_info=False,language=["en"])
         docs=loader.load()
 
         return docs[0].page_content
@@ -105,7 +105,7 @@ if entered_url and language:
     if validators.url(entered_url):
         if 'youtube'  in str(entered_url) or 'youtu.be' in str(entered_url):
             with st.spinner("Getting transcript..."):  
-                transcript=get_transcript(entered_url,language=["en"])
+                transcript=get_transcript(entered_url)
                 if len(transcript)==0:
                     st.error('transcript not found for video')
                     st.stop()
