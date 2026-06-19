@@ -16,10 +16,7 @@ from langchain_yt_dlp.youtube_loader import YoutubeLoaderDL
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
-import sys
-import langchain_core.document_loaders.base
 
-sys.modules['langchain.document_loaders.base'] = langchain_core.document_loaders.base
 
 
 import streamlit as st
@@ -71,7 +68,7 @@ For each  topic:
 def get_transcript(url:str)->str:
     """Given a youtube video url it will generate transcript required to generate summary"""
     try:
-        loader=YoutubeLoaderDL.from_youtube_url(url,add_video_info=False)
+        loader=YoutubeLoader.from_youtube_url(url,add_video_info=False,language=["en"])
         docs=loader.load()
 
         if not docs:
