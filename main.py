@@ -12,7 +12,7 @@ os.environ['LANGSMITH_TRACING']='true'
 
 
 from langchain_community.document_loaders import YoutubeLoader
-from langchain_community.document_loaders import UnstructuredURLLoader
+from langchain_community.document_loaders import WebBaseLoader
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 
@@ -62,10 +62,16 @@ For each  topic:
     ]
 )
 
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9"
+}
+
 def get_transcript(url:str)->str:
     """Given a youtube video url it will generate transcript required to generate summary"""
     try:
-        loader=YoutubeLoader.from_youtube_url(url,add_video_info=False)
+        loader=YoutubeLoader.from_youtube_url(url,add_video_info=False,headers=headers)
         docs=loader.load()
 
         return docs[0].page_content
@@ -75,7 +81,7 @@ def get_transcript(url:str)->str:
 def get_doc_from_url(url:str)->str:
     """given a non youtube url it will generate the doc needed to summarize"""
     try:
-        loader=UnstructuredURLLoader(urls=[url])
+        loader=WebBaseLoader(web_path=url)
         docs=loader.load()        
         return "\n".join([doc.page_content for doc in docs])
     
