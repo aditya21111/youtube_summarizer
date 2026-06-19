@@ -75,7 +75,7 @@ def get_transcript(url:str)->str:
 
         return docs[0].page_content
     except Exception as e:
-        print(e)
+        st.error(e)
         return ""
 
 def get_doc_from_url(url:str)->str:
@@ -110,9 +110,9 @@ if entered_url and language:
         if 'youtube'  in str(entered_url) or 'youtu.be' in str(entered_url):
             with st.spinner("Getting transcript..."):  
                 transcript=get_transcript(entered_url)
-                if len(transcript)==0:
-                    st.error('transcript not found for video')
-                    st.stop()
+            if len(transcript)==0:
+                st.error('transcript not found for video')
+                st.stop()
             st.write(f"No of words in video's transcript : {len(transcript.split())}")
 
             with st.spinner("Getting summary..."):  
