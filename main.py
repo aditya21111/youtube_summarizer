@@ -62,16 +62,12 @@ For each  topic:
     ]
 )
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9"
-}
+
 
 def get_transcript(url:str)->str:
     """Given a youtube video url it will generate transcript required to generate summary"""
     try:
-        loader=YoutubeLoader.from_youtube_url(url,add_video_info=False,headers=headers)
+        loader=YoutubeLoader.from_youtube_url(url,add_video_info=False)
         docs=loader.load()
 
         return docs[0].page_content
@@ -109,7 +105,10 @@ if entered_url and language:
     if validators.url(entered_url):
         if 'youtube'  in str(entered_url) or 'youtu.be' in str(entered_url):
             with st.spinner("Getting transcript..."):  
-                transcript=get_transcript(entered_url)
+                transcript=get_transcript(entered_url,language=["en"])
+                if len(transcript)==0:
+                    st.error('transcript not found for video')
+                    st.stop()
             st.write(f"No of words in video's transcript : {len(transcript.split())}")
 
             with st.spinner("Getting summary..."):  
