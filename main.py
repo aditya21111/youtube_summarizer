@@ -12,6 +12,7 @@ os.environ['LANGSMITH_TRACING']='true'
 
 
 from langchain_community.document_loaders import YoutubeLoader
+from langchain_yt_dlp.youtube_loader import YoutubeLoaderDL
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -67,7 +68,7 @@ For each  topic:
 def get_transcript(url:str)->str:
     """Given a youtube video url it will generate transcript required to generate summary"""
     try:
-        loader=YoutubeLoader.from_youtube_url(url,add_video_info=False,language=["en"])
+        loader=YoutubeLoaderDL.from_youtube_url(url,add_video_info=False)
         docs=loader.load()
 
         if not docs:
