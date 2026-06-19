@@ -70,9 +70,13 @@ def get_transcript(url:str)->str:
         loader=YoutubeLoader.from_youtube_url(url,add_video_info=False,language=["en"])
         docs=loader.load()
 
+        if not docs:
+            return ""
+
         return docs[0].page_content
     except Exception as e:
         print(e)
+        return ""
 
 def get_doc_from_url(url:str)->str:
     """given a non youtube url it will generate the doc needed to summarize"""
